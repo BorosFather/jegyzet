@@ -21,6 +21,12 @@ php artisan migrate
 Model generálás
 php artisan make:model 
 
+seeder generálás
+php artisan make:seeder ShipSeeder
+
+adatok feltöltése seederrel
+php artisan db:seed --class="seeder_neve"
+
 .env file ba tudjuk megadni az adatbázis nevét
 DB_DATABASE="name"
 
@@ -126,3 +132,18 @@ public function ship(){
 public $timestamps = false;
 
 //migrálásnál érdemes az idegen kulcsot tartalmazó táblát migrálni másodjára a mi esetünkben az a ship. ehez elég átnevezni a migrálni kíván file t
+
+## seeder
+
+//seeder segítségével fel tudjuk tölteni a táblánkat pl.
+DB::table("ships")->insert([
+            "name" => "Maki Verem",
+            "length" => 120,
+            "price" => 12345,
+            "person" => 2,
+            "trailer" => 1,
+        ],
+        [
+            következő
+        ]);
+
