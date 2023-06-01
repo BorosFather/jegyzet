@@ -37,20 +37,20 @@ composer install
 ### api.php
 
 //apiba importáljuk ba az adott controller amit használni szeretnénk pl.
-use App\Http\Controllers\ShipController;
+use App\Http\Controllers\ProductController;
 
 //itt adjuk meg a Route t nak hogy milyen metódust használjon és milyen útvonalon
 //meg adjuk hogy melyik controllert használja és hogy melyik fügvényt
 // metodusok lehetnek get, post, put, delete pl.
-Route::get('/ships',[ShipController::class,"index"]);
-Route::post('/ships',[ShipController::class,"store"]);
-Route::put('/ships/{id}',[ShipController::class,"update"]);
-Route::delete('/ships/{id}',[ShipController::class,"destroy"]);
+Route::get('/products',[ProductController::class,"index"]);
+Route::post('/products',[ProductController::class,"store"]);
+Route::put('/products/{id}',[ProductController::class,"update"]);
+Route::delete('/products/{id}',[ProductController::class,"destroy"]);
 
 ### controller.php
 
 //importálni kell a megadott modelt amit használni akarunk pl.
-use App\Models\ship;
+use App\Models\product;
 use Illuminate\Http\Request;
 
 //fügvény készítése 
@@ -61,15 +61,15 @@ puvlic function name(){
 //érték megadása fügvényen belül pl. 
 // $ jellel adjuk meg az értékeket
 public function index(){
-    $ships = Ship::all();
-    return response()->json(['data' => $ships], 201);
+    $products = Product::all();
+    return response()->json(['data' => $products], 201);
 }
 
 //fügvénynek tudunk értéket is mefadni pl.
 public function store(Request $request){
     $input = $request->all();
-    $ship = Ship::create($input);
-    return response()->json(['data' => $ship], 201);
+    $product = Product::create($input);
+    return response()->json(['data' => $product], 201);
 }
 
 // request en több mindent tudunk futtatni lehet az all, find, destroy
@@ -78,15 +78,15 @@ public function store(Request $request){
 //visszatérést kötelező írni ami json formába tér vissza
 //meg kell addnunk mit akarunk vissaz addni "data" ami az adatunk és hogy mi  az ami a "$ship" és egy hiba kódot
 public function update(Request $request, $id){
-   $ship = Ship::find($id);
-   $ship->update($request->all());
-   return response()->json(['data' => $ship], 201);
+   $product = Product::find($id);
+   $product->update($request->all());
+   return response()->json(['data' => $product], 201);
 }
 
 //egy értéket is átadhatunk a fügvénynek pl. az "$id"
 public function destroy($id){
-  $ship = Ship::destroy($id);
-  return response()->json(['data' => $ship], 201);
+  $product = Product::destroy($id);
+  return response()->json(['data' => $product], 201);
 }
 
 ### model
@@ -107,7 +107,7 @@ protected $fillable = [
 //lehet string, integer, double, boolean vagy foreignId az az idegen kulcs
 //ahova akarjuk az idegen kulcsot abba a táblába kell beletenni a másik tábla id nevével
 //id kötelezü megadni
-Schema::create('ships', function (Blueprint $table) {
+Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string("name");
             $table->integer("length");
@@ -125,7 +125,7 @@ public function color(){
     }
 //szíin modell
 public function ship(){
-        return $this -> hasMany(Ship::class);
+        return $this -> hasMany(Product::class);
     }
 
 //ilyenkor érdemes kiszedni a timestamps  et 
@@ -136,7 +136,7 @@ public $timestamps = false;
 ## seeder
 
 //seeder segítségével fel tudjuk tölteni a táblánkat pl.
-DB::table("ships")->insert([
+DB::table("products")->insert([
             "name" => "Maki Verem",
             "length" => 120,
             "price" => 12345,
