@@ -55,9 +55,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 </table>
 
 //táblázatba szeretnént adatokat megjeleníteni azt al alábbi módon tehetjük meg
-<tr *ngFor="let ship of ships">
-        <td>{{ship.name}}</td>
-        <td>{{ship.salary}}</td>
+<tr *ngFor="let product of products">
+        <td>{{product.name}}</td>
+        <td>{{product.salary}}</td>
 </tr>
 
 ### modals
@@ -113,8 +113,8 @@ import { ReactiveFormsModule } from '@angular/forms';
       <th>Név</th>
     </thead>
     <tbody>
-      <tr *ngFor="let ship of ships">
-        <td>{{ship.name}}</td>
+      <tr *ngFor="let product of products">
+        <td>{{product.name}}</td>
         <td>
           <div class="row mx-2">
             <button class="text-dark bg-warning p-2 rounded border-warning" (click)="editProduct(ship)" data-bs-toggle="modal" data-bs-target="#modifyModal" >
@@ -165,12 +165,12 @@ empForm!: FormGroup;
       length: [''],
     });
 //fügvény meghívása
-    this.getShips();
+    this.getProducts();
   }
 //fügvény lekéri a restapi ból az adatbázisban lévő hajókat
 //subscribe() al tudjuk lekérni
-  getShips(){
-    this.api.getShips().subscribe(
+  getProducts(){
+    this.api.getProducts().subscribe(
       res => {
         console.log(res.data);
         this.ships = res.data;
@@ -180,18 +180,18 @@ empForm!: FormGroup;
 
 //hozzáadás
 //megadjuk hogy mit szeretnénk hozzáaddni milyen értékhaz
-    addShips() {
+    addProducts() {
     let data = {
       name: this.productForm.value.name,
       length: this.productForm.value.length,
     };
 //fenti data ba tároljuk el az új hajó adatait
-//addShip(data) adjuk hozzá 
+//addProduct(data) adjuk hozzá 
     this.clearField();
-    this.api.addShip(data).subscribe({
+    this.api.addProduct(data).subscribe({
       next: (data: any) => {
         console.log('vissza: ' + data);
-        this.getShips();
+        this.getProducts();
       },
       error: (err: any) => {
       }
@@ -209,9 +209,9 @@ empForm!: FormGroup;
 //majd visszatérünk a getShips()
   deleteShip(id: number){
     console.log(id);
-    this.api.deleteShip(id).subscribe({
+    this.api.deleteProduct(id).subscribe({
       next: (res:any) => {
-        this.getShips();
+        this.getProducts();
       },
       error: (err) => {
       }
@@ -259,12 +259,12 @@ constructor(private http: HttpClient) { }
  url = "http://localhost:8000/api/valami";
 
  //itt csak megjelenítünk ezét csak visszatérünk mindegyik értékkel get metódust használva
-  getShips(){
+  getProducts(){
     return this.http.get<any>(this.url);
   }
 
 //
-  addShip(ship: any){
+  addProduct(product: any){
     let httpHeaders = new HttpHeaders();
     httpHeaders.append("Content-Type","application/json");
     let httpOptions = {
